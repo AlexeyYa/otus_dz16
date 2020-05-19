@@ -1,0 +1,47 @@
+version: '0.1.{build}'
+
+image: Visual Studio 2019
+
+platform:
+  - x64
+
+configuration:
+  - Release
+  
+before_build:
+  - set VCPKG_INSTALLED=C:\Tools\vcpkg\installed\%platform%-windows
+  # If cached directory does not exist, update vcpkg and install dependencies
+  - if not exist %VCPKG_INSTALLED%\bin (
+      cd "C:\Tools\vcpkg" &
+      git pull > nul &
+      .\bootstrap-vcpkg.bat -disableMetrics &
+      vcpkg install dlib:"%platform%"-windows &
+      vcpkg install libjpeg-turbo:"%platform%"-windows &
+      cd %APPVEYOR_BUILD_FOLDER%
+    )
+  - cmake -G "Visual Studio 16 2019" -DCMAKE_TOOLCHAIN_FILE:INTERNAL=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+build:
+  project: $(APPVEYOR_BUILD_FOLDER)\realty.sln
+
+after_build:
+  - ctest -C Release
+  - cpack -G ZIP $(APPVEYOR_BUILD_FOLDER)
+
+artifacts:
+  - path: '*.zip'
+    name: zip-x64
+
+deploy:
+- provider: BinTray
+  username: alexeyya
+  api_key:
+    secure: AxjYJbTd/GAJNYnkV6NpQoxE8JKQbHBT0ZfCa5kg2MvJObnYw7XYQq8EZ+wAjjrn
+  subject: alexeyya
+  repo: otus
+  package: dz16
+  artifact: zip-x64
+  publish: true
+  override: true
+  explode: true
+  
