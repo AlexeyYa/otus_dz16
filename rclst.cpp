@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     kkmeans<kernel_type> test(kc);
 
     std::vector<sample_type> samples;
-    std::vector<Entry> entries;
+    std::vector<dlib::Entry> entries;
     std::vector<sample_type> initial_centers;
 
     std::vector<sample_type> values_range;
@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
     // Saving model
     serialize(filename + ".mdl") << test << values_range;
 
-    std::vector<std::vector<Entry>> out_vec;
+    std::vector<std::vector<dlib::Entry>> out_vec;
     out_vec.resize(nclusters);
     for (size_t i = 0; i < samples.size(); i++)
     {

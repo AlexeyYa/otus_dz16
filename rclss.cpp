@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
         std::stringstream ss;
         ss << filename << ".dat" << bucket;
 
-        std::vector<Entry> close_entries;
+        std::vector<dlib::Entry> close_entries;
         deserialize(ss.str()) >> close_entries;
 
         std::sort(close_entries.begin(), close_entries.end(),
