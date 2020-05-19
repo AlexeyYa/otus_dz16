@@ -57,6 +57,7 @@ std::ostream& operator<<(std::ostream& os, const Entry& ent)
 
 namespace dlib
 {
+    template<typename Entry>
     void serialize(const Entry& ent, std::ostream& out)
     {
         try
@@ -76,6 +77,7 @@ namespace dlib
         }
     }
 
+    template<typename Entry>
     void deserialize(Entry& ent, std::istream& in)
     {
         try
