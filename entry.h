@@ -3,7 +3,8 @@
 #define ENTRY_H
 
 #include <iostream>
-#include <dlib/clustering.h>
+#include <dlib/matrix.h>
+#include <dlib/serialize.h>
 
 struct Entry
 {
